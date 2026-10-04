@@ -1,13 +1,36 @@
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchLorem } from "../redux/actions";
 
-import React from "react";
-import './../styles/App.css';
+function App() {
+  const dispatch = useDispatch();
 
-const App = () => {
+  const { loading, data, error } = useSelector(
+    (state) => state
+  );
+
+  useEffect(() => {
+    dispatch(fetchLorem());
+  }, [dispatch]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
     <div>
-        {/* Do not remove the main div */}
+      {data && (
+        <>
+          <p>Title: {data.title}</p>
+          <p>Body: {data.body}</p>
+        </>
+      )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
